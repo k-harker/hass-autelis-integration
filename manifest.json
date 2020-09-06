@@ -1,0 +1,8 @@
+{
+  "domain": "autelis_pool",
+  "name": "Autelis Pool Control",
+  "documentation": "https://github.com/k-harker/hass-autelis-integration",
+  "after_dependencies": ["discovery", "http"],
+  "codeowners": ["k-harker"],
+  "config_flow": true
+}

@@ -1,0 +1,14 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "data": {
+                    "host": "Host",
+                    "password": "Password"
+                },
+                "description": "Please enter the hostname or IP of your Autelis controller",
+                "title": "Autelis Controller"
+            }
+        }
+    }
+}
