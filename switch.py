@@ -42,9 +42,11 @@ class AutelisCircuit(SwitchEntity):
 
     async def async_turn_on(self, **kwargs):
         """Turn on switch."""
+        self.data.equipment[self.equipment_name] = "1"
         await self.api.control(self.equipment_name, 1)
 
     async def async_turn_off(self, **kwargs):
         """Turn off switch."""
+        self.data.equipment[self.equipment_name] = "0"
         await self.api.control(self.equipment_name, 0)
 
