@@ -15,20 +15,20 @@ AUTELIS_PLATFORMS = ["sensor", "switch"] # ["binary_sensor", "climate", "sensor"
 TEMP_SENSORS = {
     "pooltemp": ["Temperature", "Pool"],
     "spatemp": ["Temperature", "Spa"],
-    "airtemp": ["Temperature", "Air"], 
-    "solartemp": ["Temperature", "Solar"], 
+    "airtemp": ["Temperature", "Air"],
+    "solartemp": ["Temperature", "Solar"],
 }
 
 HEAT_SET = {
-    "poolsp": ["Pool Heat", "pooltemp"],
-    "spasp": ["Spa Heat", "spatemp"],
+    "poolsp": ["Pool Heat", "pooltemp", "poolht"],
+    "spasp": ["Spa Heat", "spatemp", "spaht"],
 }
 
 CIRCUITS = {
     "pump": "Pool",
     "spa": "Spa",
-    "aux1": "Spa Extra Jets", 
-    "aux2": "Sheer Descents", 
+    "aux1": "Spa Extra Jets",
+    "aux2": "Sheer Descents",
     "aux3": "Pool Light",
     "aux3": "Spa Light",
 }
