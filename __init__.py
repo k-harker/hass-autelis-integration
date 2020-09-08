@@ -27,7 +27,7 @@ from .api import AutelisPoolAPI
 _LOGGER = logging.getLogger(__name__)
 
 DEFAULT_NAME = "Pool Control"
-MIN_TIME_BETWEEN_UPDATES = timedelta(seconds=10)
+MIN_TIME_BETWEEN_UPDATES = timedelta(seconds=60)
 
 
 def setup(hass, config):

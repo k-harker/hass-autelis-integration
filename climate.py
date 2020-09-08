@@ -1,14 +1,14 @@
 # """Support for controlling Heaters through Autelis."""
 import logging
+import collections
 
 import requests
 
-from homeassistant.const import TEMP_CELSIUS, TEMP_FAHRENHEIT
+from homeassistant.const import ATTR_TEMPERATURE, TEMP_CELSIUS, TEMP_FAHRENHEIT
 from homeassistant.helpers.entity import Entity
-from homeassistant.components.climate import ClimateDevice
+from homeassistant.components.climate import ClimateEntity
 from homeassistant.components.climate.const import (
-    ATTR_TARGET_TEMP_HIGH,
-    ATTR_TARGET_TEMP_LOW,
+    CURRENT_HVAC_OFF,
     CURRENT_HVAC_HEAT,
     CURRENT_HVAC_IDLE,
     HVAC_MODE_HEAT,
@@ -16,22 +16,35 @@ from homeassistant.components.climate.const import (
     SUPPORT_TARGET_TEMPERATURE,
     SUPPORT_TARGET_TEMPERATURE_RANGE,
 )
-from .const import DOMAIN, HEAT_SET
+from .const import DOMAIN, HEAT_SET, _LOGGER, MAX_TEMP, MIN_TEMP
 
-_LOGGER = logging.getLogger(__name__)
+AUTELIS_HEAT_TO_ACTION = collections.OrderedDict(
+    [
+        (0, CURRENT_HVAC_OFF),
+        (1, CURRENT_HVAC_IDLE),
+        (2, CURRENT_HVAC_HEAT),
+    ]
+)
 
+AUTELIS_HEAT_TO_MODE = collections.OrderedDict(
+    [
+        (0, HVAC_MODE_OFF),
+        (1, HVAC_MODE_HEAT),
+        (2, HVAC_MODE_HEAT),
+    ]
+)
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up autelis heater temps."""
     data = hass.data[DOMAIN]
     dev = []
     for item in HEAT_SET.items():
-        dev.append(HeaterTemp(data, item, item[0], item[1], item[2]))
+        dev.append(HeaterTemp(data, item[0], item[1][0], item[1][1], item[1][2]))
 
     async_add_entities(dev, True)
 
 
-class HeaterTemp(ClimateDevice):
+class HeaterTemp(ClimateEntity):
     """Representation of an Autelis pool control."""
 
     def __init__(
@@ -53,6 +66,8 @@ class HeaterTemp(ClimateDevice):
         self.current_temp = None
         self._unit_of_measurement = TEMP_FAHRENHEIT
         self._icon = icon
+        self.mode = None
+        self.action = None
         _LOGGER.debug("Created Autelis sensor %r", self)
 
     @property
@@ -66,21 +81,12 @@ class HeaterTemp(ClimateDevice):
         """Return the name of the sensor."""
         return self.friendly_name
 
-    @property
-    def state(self):
-        """Return the state of the sensor."""
-        sensor_unit = self.unit_of_measurement
-        if sensor_unit in (TEMP_CELSIUS, TEMP_FAHRENHEIT):
-            # API sometimes returns null and not 0
-            if self.current_temp is None:
-                self.current_temp = 0
-            return round(self.current_temp, 2)
-        return self.current_temp
-
     async def async_set_hvac_mode(self, hvac_mode):
+        _LOGGER.warn(f"Set Mode {hvac_mode} {self.mode}")
         self.mode = hvac_mode
         newMode = 1 if hvac_mode == HVAC_MODE_HEAT else 0
-        self.data.api.control(self.equip_name, newMode)
+        self.data.equipment[self.equip_name] = newMode
+        await self.data.api.control(self.equip_name, newMode)
 
     async def async_set_temperature(self, **kwargs):
         """Set new target temperature."""
@@ -89,8 +95,12 @@ class HeaterTemp(ClimateDevice):
         if temp > 104:
             temp = 104
 
-        self.target_temp = temp
-        self.data.api.control(self.target_name, temp)
+        tempInt = int(temp)
+        self.target_temp = tempInt
+        self.data.sensors[self.target_name] = str(tempInt)
+        await self.data.api.control(self.target_name, tempInt, "temp")
+
+        _LOGGER.warn(f"Setting temp to {tempInt}")
 
     @property
     def supported_features(self):
@@ -99,6 +109,12 @@ class HeaterTemp(ClimateDevice):
     @property
     def hvac_modes(self):
         return HVAC_MODE_OFF, HVAC_MODE_HEAT
+
+    @property
+    def hvac_mode(self):
+        """Return current operation."""
+        _LOGGER.warn(self.mode)
+        return self.mode
 
     @property
     def temperature_unit(self):
@@ -114,26 +130,39 @@ class HeaterTemp(ClimateDevice):
         return self.target_temp
 
     @property
+    def target_temperature_high(self):
+        return MAX_TEMP
+
+    @property
+    def target_temperature_low(self):
+        return MIN_TEMP
+
+    @property
+    def max_temp(self):
+        return MAX_TEMP
+
+    @property
+    def min_temp(self):
+        return MIN_TEMP
+
+
+    @property
     def hvac_action(self):
         """Return current HVAC action."""
-        heatMode = self.data.equipment[self.equip_name]
-
-        if heatMode == "1"
-            return CURRENT_HVAC_IDLE
-
-        if heatMode == "2":
-            return CURRENT_HVAC_HEAT
-
-        return CURRENT_HVAC_OFF
+        return self.action
 
     async def async_update(self):
         """Get the latest state of the sensor."""
         await self.data.update()
 
-        self.current_temp = self.data.sensors[self.sensor_name]
-        self.target_temp = self.data.sensors[self.target_name]
-        heatMode = self.data.equipment[self.equip_name]
-        self.mode = HVAC_MODE_HEAT if heatMode > 0 else HVAC_MODE_OFF
+        self.current_temp = int(self.data.sensors[self.sensor_name])
+        self.target_temp = int(self.data.sensors[self.target_name])
+        heatMode = int(self.data.equipment[self.equip_name])
+        
+        self.mode = AUTELIS_HEAT_TO_MODE[heatMode]
+        self.action = AUTELIS_HEAT_TO_ACTION[heatMode]
+
+        _LOGGER.Info(f"Climate updated Temp: {self.current_temp} Target: {self.target_temp} Mode: {self.mode} Action: {self.action}")
 
     @property
     def icon(self):

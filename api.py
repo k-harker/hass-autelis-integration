@@ -60,9 +60,9 @@ class AutelisPoolAPI:
             return status.find(group).find(name).text
         return None
 
-    async def control(self, equipment_name, attr_value):
+    async def control(self, equipment_name, attr_value, attr_name="value"):
         """Set the value for equipment_name."""
-        endpoint = f"set.cgi?name={equipment_name}&value={attr_value}"
+        endpoint = f"set.cgi?name={equipment_name}&{attr_name}={attr_value}"
         url = self.api_url + endpoint
 
         _LOGGER.error(url)
@@ -92,9 +92,9 @@ class AutelisPoolAPI:
         _LOGGER.info("Response", response)
 
         if response is not None:
-            text = response.text()
+            text = await response.text()
             _LOGGER.error(text)
-            return await text == "1"
+            return text == "1"
         
         return response
 

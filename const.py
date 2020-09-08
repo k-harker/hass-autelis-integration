@@ -9,7 +9,7 @@ AUTELIS_PASSWORD = "password"
 
 AUTELIS_USERNAME = "admin"
 
-AUTELIS_PLATFORMS = ["sensor", "switch"] # ["binary_sensor", "climate", "sensor", "weather"]
+AUTELIS_PLATFORMS = ["sensor", "switch", "climate"] # ["binary_sensor", "climate", "sensor", "weather"]
 
 
 TEMP_SENSORS = {
@@ -20,8 +20,8 @@ TEMP_SENSORS = {
 }
 
 HEAT_SET = {
-    "poolsp": ["Pool Heat", "pooltemp", "poolht"],
-    "spasp": ["Spa Heat", "spatemp", "spaht"],
+    "Pool Heat": ["pooltemp", "poolsp", "poolht"],
+    "Spa Heat": ["spatemp", "spasp", "spaht"],
 }
 
 CIRCUITS = {
@@ -31,7 +31,11 @@ CIRCUITS = {
     "aux2": "Sheer Descents",
     "aux3": "Pool Light",
     "aux3": "Spa Light",
+    "solarht": "Solar Heating",
 }
 
 STATE_SERVICE = "service"
 STATE_AUTO = "auto"
+
+MAX_TEMP = 104
+MIN_TEMP = 34
