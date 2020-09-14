@@ -65,7 +65,7 @@ class AutelisPoolAPI:
         endpoint = f"set.cgi?name={equipment_name}&{attr_name}={attr_value}"
         url = self.api_url + endpoint
 
-        _LOGGER.error(url)
+        # _LOGGER.error(url)
 
         kwargs = {}
         if self.password is not None:
@@ -93,7 +93,7 @@ class AutelisPoolAPI:
 
         if response is not None:
             text = await response.text()
-            _LOGGER.error(text)
+            # _LOGGER.error(text)
             return text == "1"
         
         return response

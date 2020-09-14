@@ -82,7 +82,7 @@ class HeaterTemp(ClimateEntity):
         return self.friendly_name
 
     async def async_set_hvac_mode(self, hvac_mode):
-        _LOGGER.warn(f"Set Mode {hvac_mode} {self.mode}")
+        # _LOGGER.warn(f"Set Mode {hvac_mode} {self.mode}")
         self.mode = hvac_mode
         newMode = 1 if hvac_mode == HVAC_MODE_HEAT else 0
         self.data.equipment[self.equip_name] = newMode
@@ -100,7 +100,7 @@ class HeaterTemp(ClimateEntity):
         self.data.sensors[self.target_name] = str(tempInt)
         await self.data.api.control(self.target_name, tempInt, "temp")
 
-        _LOGGER.warn(f"Setting temp to {tempInt}")
+        # _LOGGER.warn(f"Setting temp to {tempInt}")
 
     @property
     def supported_features(self):
@@ -113,7 +113,6 @@ class HeaterTemp(ClimateEntity):
     @property
     def hvac_mode(self):
         """Return current operation."""
-        _LOGGER.warn(self.mode)
         return self.mode
 
     @property
@@ -162,7 +161,7 @@ class HeaterTemp(ClimateEntity):
         self.mode = AUTELIS_HEAT_TO_MODE[heatMode]
         self.action = AUTELIS_HEAT_TO_ACTION[heatMode]
 
-        _LOGGER.Info(f"Climate updated Temp: {self.current_temp} Target: {self.target_temp} Mode: {self.mode} Action: {self.action}")
+        _LOGGER.info(f"Climate updated Temp: {self.current_temp} Target: {self.target_temp} Mode: {self.mode} Action: {self.action}")
 
     @property
     def icon(self):
