@@ -21,7 +21,6 @@ class AutelisPoolAPI:
 
     async def get(self, endpoint):
         """Send a get request, and return the response as a dict."""
-        # Only query the API at most every 30 seconds
         
         kwargs = {}
         if self.password is not None:
@@ -59,6 +58,23 @@ class AutelisPoolAPI:
         if status is not None:
             return status.find(group).find(name).text
         return None
+
+    async def get_names(self):
+        names = { }
+        response = await self.get("names.xml")
+
+        if response is not None:
+            equip = response.find("equipment")
+
+            if equip is not None:
+                for child in equip:
+                    value = child.text
+                    names[child.tag] = value
+                
+            else:
+                _LOGGER.error("Names equip is None")
+        
+        return names
 
     async def control(self, equipment_name, attr_value, attr_name="value"):
         """Set the value for equipment_name."""

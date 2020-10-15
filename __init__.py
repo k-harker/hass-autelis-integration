@@ -57,14 +57,14 @@ async def async_setup_entry(hass, entry):
 
     return True
 
-async def async_unload_entry(hass, config_entry):
+async def async_unload_entry(hass, entry):
     """Unload the config entry and platforms."""
     hass.data.pop(DOMAIN)
 
     tasks = []
     for platform in AUTELIS_PLATFORMS:
         tasks.append(
-            hass.config_entries.async_forward_entry_unload(config_entry, platform)
+            hass.config_entries.async_forward_entry_unload(entry, platform)
         )
 
     return all(await asyncio.gather(*tasks))
@@ -85,10 +85,14 @@ class AutelisData:
         self.sensors = { }
         self.equipment = { }
         self.mode = ""
+        self.names = { }
 
     @Throttle(MIN_TIME_BETWEEN_UPDATES)
     async def update(self):
         """Get the latest data from autelis controller"""
+
+        if self.names is None or len(self.names) == 0:
+            self.names = await self.api.get_names()
         
         _LOGGER.debug("Updating autelis")
         status = await self.api.get("status.xml")
@@ -96,7 +100,6 @@ class AutelisData:
         temps = status.find("temp")
 
         if temps is not None:
-            # _LOGGER.error(temps)
             for child in temps:
                 value = child.text
                 self.sensors[child.tag] = value
@@ -106,15 +109,14 @@ class AutelisData:
         equip = status.find("equipment")
 
         if equip is not None:
-            # _LOGGER.error(equip)
             for child in equip:
                 value = child.text
                 self.equipment[child.tag] = value
         else:
             _LOGGER.error("equip is None")
         
-        opmode = status.find("opmode")
-        freeze = status.find("freeze")
+        # opmode = status.find("opmode")
+        # freeze = status.find("freeze")
 
         # self.mode = STATE_AUTO if opmode && opmode.text == "1" else STATE_SERVICE
         # self.freeze = STATE_ON if freeze && freeze.text == "1" else STATE_OFF

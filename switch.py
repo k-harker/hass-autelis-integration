@@ -7,7 +7,9 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up autelis pump circuit switches."""
     data = hass.data[DOMAIN]
     entities  = []
-    for item in CIRCUITS:
+    
+    for item in data.names.items():
+    # for item in CIRCUITS:
         entities .append(AutelisCircuit(data, item, CIRCUITS[item]))
 
     async_add_entities(entities , True)
