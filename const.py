@@ -27,10 +27,6 @@ HEAT_SET = {
 CIRCUITS = {
     "pump": "Pool",
     "spa": "Spa",
-    "aux1": "Spa Extra Jets",
-    "aux2": "Sheer Descents",
-    "aux3": "Pool Light",
-    "aux4": "Spa Light",
     "solarht": "Solar Heating",
 }
 
