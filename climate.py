@@ -75,6 +75,11 @@ class HeaterTemp(ClimateEntity):
         """Return a unique identifier for this ecobee thermostat."""
         return self.sensor_name
 
+    @property
+    def available(self):
+        """Return if the switch is available to be turned on."""
+        return int(self.data.equipment.runstate) > 7 and
+            self.data.equipment.opmode == "0"
 
     @property
     def name(self):
@@ -157,7 +162,7 @@ class HeaterTemp(ClimateEntity):
         self.current_temp = int(self.data.sensors[self.sensor_name])
         self.target_temp = int(self.data.sensors[self.target_name])
         heatMode = int(self.data.equipment[self.equip_name])
-        
+
         self.mode = AUTELIS_HEAT_TO_MODE[heatMode]
         self.action = AUTELIS_HEAT_TO_ACTION[heatMode]
 

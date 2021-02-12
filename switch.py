@@ -7,7 +7,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up autelis pump circuit switches."""
     data = hass.data[DOMAIN]
     entities  = []
-    
+
     for item in CIRCUITS:
         entities.append(AutelisCircuit(data, item, CIRCUITS[item]))
 
@@ -27,8 +27,14 @@ class AutelisCircuit(SwitchEntity):
         self._name = f"{equipment_name}"
         self.equipment_name = equipment_name
         self.friendly_name = friendly_name
-        
+
         _LOGGER.debug(f"adding circuit for {equipment_name}")
+
+    @property
+    def available(self):
+        """Return if the switch is available to be turned on."""
+        return int(self.data.equipment.runstate) > 7 and
+            self.data.equipment.opmode == "0"
 
     @property
     def name(self):

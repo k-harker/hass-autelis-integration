@@ -5,9 +5,11 @@ This is the beginnings of an [Autelis Pool Controller](http://autelis.com/) inte
 * A config UI that allows you to enter the host and password of your Autelis controller
 * Switches (allows you to turn these items on and off)
   * for the Pumps
-    * 
-  * for the Aux 
-* Sensors for 
+    * Pool
+    * Spa
+    * Solar Heat
+  * for the Aux
+* Sensors for
     * Air Temp
     * Solar Temp
     * Spa Temp
@@ -21,7 +23,7 @@ This is the beginnings of an [Autelis Pool Controller](http://autelis.com/) inte
 * Variable Speed Pumps
 * "Chemistry" pages
 * Color Lights
-  
+
 # Known Issues
 
 * If the pump is in service mode everything is still enabled but doesn't function
