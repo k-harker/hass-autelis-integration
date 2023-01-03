@@ -115,9 +115,14 @@ class AutelisData:
         else:
             _LOGGER.error("equip is None")
         
-        # opmode = status.find("opmode")
+        opmode = status.find(".//opmode")
         # freeze = status.find("freeze")
 
-        # self.mode = STATE_AUTO if opmode && opmode.text == "1" else STATE_SERVICE
+        if opmode is not None:
+            self.mode = STATE_AUTO if opmode.text == "0" else STATE_SERVICE
+        else:
+            self.mode = STATE_SERVICE
+            _LOGGER.error("opmode is None")
+
         # self.freeze = STATE_ON if freeze && freeze.text == "1" else STATE_OFF
         return

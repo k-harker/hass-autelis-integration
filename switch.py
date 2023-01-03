@@ -1,7 +1,7 @@
 """Support for Autelis switches"""
 from homeassistant.components.switch import SwitchEntity
 
-from .const import (_LOGGER, DOMAIN, CIRCUITS)
+from .const import (_LOGGER, DOMAIN, CIRCUITS, STATE_AUTO)
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up autelis pump circuit switches."""
@@ -33,8 +33,7 @@ class AutelisCircuit(SwitchEntity):
     @property
     def available(self):
         """Return if the switch is available to be turned on."""
-        return int(self.data.equipment.runstate) > 7 and
-            self.data.equipment.opmode == "0"
+        return self.data.mode == STATE_AUTO
 
     @property
     def name(self):
@@ -44,7 +43,7 @@ class AutelisCircuit(SwitchEntity):
     @property
     def unique_id(self):
         """Return a unique identifier for this circuit."""
-        return f"{self.data.host} {self.equipment_name}"
+        return f"autelis {self.data.host} {self.equipment_name}"
 
     @property
     def is_on(self):

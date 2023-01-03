@@ -16,7 +16,7 @@ from homeassistant.components.climate.const import (
     SUPPORT_TARGET_TEMPERATURE,
     SUPPORT_TARGET_TEMPERATURE_RANGE,
 )
-from .const import DOMAIN, HEAT_SET, _LOGGER, MAX_TEMP, MIN_TEMP
+from .const import DOMAIN, HEAT_SET, _LOGGER, MAX_TEMP, MIN_TEMP, STATE_AUTO
 
 AUTELIS_HEAT_TO_ACTION = collections.OrderedDict(
     [
@@ -72,14 +72,13 @@ class HeaterTemp(ClimateEntity):
 
     @property
     def unique_id(self):
-        """Return a unique identifier for this ecobee thermostat."""
-        return self.sensor_name
+        """Return a unique identifier for this autelis thermostat."""
+        return f"autelis {self.data.host} {self.sensor_name}"
 
     @property
     def available(self):
         """Return if the switch is available to be turned on."""
-        return int(self.data.equipment.runstate) > 7 and
-            self.data.equipment.opmode == "0"
+        return self.data.mode == STATE_AUTO
 
     @property
     def name(self):

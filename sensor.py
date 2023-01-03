@@ -17,7 +17,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     data = hass.data[DOMAIN]
     dev = []
     for item in TEMP_SENSORS.items():
-        dev.append(AutelisSensor(data, item[0], item[1][0]))
+        dev.append(AutelisSensor(data, item[0], item[1][1], item[1][0]))
 
     async_add_entities(dev, True)
 
@@ -25,10 +25,10 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 class AutelisSensor(Entity):
     """Representation of an Autelis sensor."""
 
-    def __init__(self, data, sensor_name, sensor_type):
+    def __init__(self, data, sensor_name, friendly_name, sensor_type):
         """Initialize the sensor."""
         self.data = data
-        self._name = f"{sensor_name} {sensor_type}"
+        self._name = f"{friendly_name} {sensor_type}"
         self.sensor_name = sensor_name
         self.type = sensor_type
         self._state = None
@@ -44,7 +44,7 @@ class AutelisSensor(Entity):
     @property
     def unique_id(self):
         """Return a unique identifier for this sensor."""
-        return f"{self.data.host} {self.sensor_name}"
+        return f"autelis {self.data.host} {self.sensor_name}"
                 
     @property
     def device_class(self):
