@@ -4,5 +4,6 @@
   "documentation": "https://github.com/k-harker/hass-autelis-integration",
   "after_dependencies": ["discovery", "http"],
   "codeowners": ["k-harker"],
-  "config_flow": true
+  "config_flow": true,
+  "version": "1.0.1"
 }
