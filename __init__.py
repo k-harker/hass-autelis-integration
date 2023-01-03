@@ -1,11 +1,10 @@
-"""Support for monitoring OctoPrint 3D printers."""
+"""Support for controlling an Autelis pool controller (from www.autelis.com which no longer exists) to control one of several different types of pool control systems"""
 import asyncio
 from datetime import timedelta
 import logging
 import time
 
 
-from homeassistant.components.discovery import SERVICE_OCTOPRINT
 from homeassistant.const import (
     CONF_PASSWORD,
     CONF_HOST,
@@ -72,7 +71,6 @@ async def async_unload_entry(hass, entry):
 class AutelisData:
     """
     Handle getting the latest data from autelis so platforms can use it.
-    Also handle refreshing tokens and updating config entry with refreshed tokens.
     """
 
     def __init__(self, hass, entry, host, password):
