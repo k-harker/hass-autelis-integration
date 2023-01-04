@@ -9,9 +9,9 @@ This is the beginnings of an [Autelis Pool Controller](http://autelis.com/) inte
     * Spa (this is the same as putting it in Spa mode)
     * Solar Heat
   * for the Aux (e.g. lights) 
-    * It will use the names configured in the Autelis controller.  IIf the name starts with "AUX" or if the name is empty, it will not be included in Home Assistant
+    * It will use the names configured in the Autelis controller.  IIf the name starts with "AUX" or if the name is empty, it will not be included in Home Assistant.
   * for the Macros
-    * The names of the Macros will be pulled from the Autelis controller.  If the name starts with "MACRO" or if the name is empty, it will not be included in Home Assistant
+    * It will use the names configured in the Autelis controller.  If the name starts with "MACRO" or if the name is empty, it will not be included in Home Assistant.
 * Sensors for
     * Air Temp
     * Solar Temp
@@ -24,8 +24,10 @@ This is the beginnings of an [Autelis Pool Controller](http://autelis.com/) inte
 # Not Currently Supported
 
 * Variable Speed Pumps
-* "Chemistry" pages
+* Chemistry
 * Color Lights
+* Battery Voltage & lowbat (Aqualink only?) 
+* Freeze Protect
 
 # Known Issues
 
