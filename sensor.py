@@ -1,12 +1,17 @@
 """Support for Autelis sensors."""
 
 from homeassistant.const import (
-    DEVICE_CLASS_HUMIDITY,
-    DEVICE_CLASS_TEMPERATURE,
-    TEMP_FAHRENHEIT,
+    UnitOfTemperature,
     PERCENTAGE,
 )
 from homeassistant.helpers.entity import Entity
+
+from homeassistant.components.sensor import (
+    SensorDeviceClass,
+    SensorEntity,
+    SensorEntityDescription,
+    SensorStateClass,
+)
 
 from .const import _LOGGER, DOMAIN, TEMP_SENSORS
 
@@ -32,7 +37,7 @@ class AutelisSensor(Entity):
         self.sensor_name = sensor_name
         self.type = sensor_type
         self._state = None
-        self._unit_of_measurement = TEMP_FAHRENHEIT
+        self._unit_of_measurement = UnitOfTemperature.FAHRENHEIT
 
         _LOGGER.debug(f"adding sensor {sensor_name}")
 
@@ -49,7 +54,7 @@ class AutelisSensor(Entity):
     @property
     def device_class(self):
         """Return the device class of the sensor."""
-        if self.type in (DEVICE_CLASS_TEMPERATURE):
+        if self.type in (SensorDeviceClass.TEMPERATURE):
             return self.type
         return None
 

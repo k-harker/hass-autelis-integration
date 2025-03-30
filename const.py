@@ -1,5 +1,6 @@
 """Constants for the autelis integration."""
 import logging
+from homeassistant.const import Platform
 
 _LOGGER = logging.getLogger(__package__)
 
@@ -29,6 +30,12 @@ CIRCUITS = {
     "spa": "Spa",
     "solarht": "Solar Heating",
 }
+
+PLATFORMS = [
+    Platform.CLIMATE,
+    Platform.SENSOR,
+    Platform.SWITCH,
+]
 
 STATE_SERVICE = "service"
 STATE_AUTO = "auto"

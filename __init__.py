@@ -19,7 +19,8 @@ from .const import (
     AUTELIS_PLATFORMS, 
     TEMP_SENSORS,
     STATE_AUTO,
-    STATE_SERVICE
+    STATE_SERVICE,
+    PLATFORMS
 )
 from .api import AutelisPoolAPI
 
@@ -49,10 +50,12 @@ async def async_setup_entry(hass, entry):
 
     hass.data[DOMAIN] = data
 
-    for component in AUTELIS_PLATFORMS:
-        hass.async_create_task(
-            hass.config_entries.async_forward_entry_setup(entry, component)
-        )
+
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+#    for component in AUTELIS_PLATFORMS:
+#        hass.async_create_task(
+#            hass.config_entries.async_forward_entry_setup(entry, component)
+#        )
 
     return True
 
@@ -81,6 +84,7 @@ class AutelisData:
         self.password = password
         self.api = AutelisPoolAPI(hass, f"http://{host}/", password)
         self.sensors = { }
+        self.sensors2 = { }
         self.equipment = { }
         self.mode = ""
         self.names = { }
@@ -112,6 +116,20 @@ class AutelisData:
                 self.equipment[child.tag] = value
         else:
             _LOGGER.error("equip is None")
+        
+        #vbat = status.find(".//vbat")
+        
+        #if vbat is not None:
+        #    self.sensors2["vbat"] = vbat * 0.01464
+        #else:
+        #    _LOGGER.debug("vbat does not have a value")
+        
+        #lowbat = status.find(".//lowbat")
+        
+        #if lowbat is not None:
+        #    self.sensors2["lowbat"] = lowbat == "1"
+        #else:
+        #    _LOGGER.debug("lowbat does not have a value")
         
         opmode = status.find(".//opmode")
         # freeze = status.find("freeze")

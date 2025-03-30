@@ -48,8 +48,11 @@ class AutelisCircuit(SwitchEntity):
     @property
     def is_on(self):
         """Return true if switch is on."""
-
-        return True if self.data.equipment[self.equipment_name] == "1" else False
+        # solar heat is 1 if enabled, 2 if on.
+        if self.data.equipment[self.equipment_name] == "1" or self.data.equipment[self.equipment_name] == "2":
+            return True
+        else:
+            return False
 
     async def async_turn_on(self, **kwargs):
         """Turn on switch."""

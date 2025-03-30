@@ -4,33 +4,32 @@ import collections
 
 import requests
 
-from homeassistant.const import ATTR_TEMPERATURE, TEMP_CELSIUS, TEMP_FAHRENHEIT
+from homeassistant.const import (
+    ATTR_TEMPERATURE, 
+    UnitOfTemperature
+    )
 from homeassistant.helpers.entity import Entity
-from homeassistant.components.climate import ClimateEntity
-from homeassistant.components.climate.const import (
-    CURRENT_HVAC_OFF,
-    CURRENT_HVAC_HEAT,
-    CURRENT_HVAC_IDLE,
-    HVAC_MODE_HEAT,
-    HVAC_MODE_OFF,
-    SUPPORT_TARGET_TEMPERATURE,
-    SUPPORT_TARGET_TEMPERATURE_RANGE,
-)
+from homeassistant.components.climate import (
+    ClimateEntity,
+    ClimateEntityFeature,
+    HVACAction,
+    HVACMode,
+    )
 from .const import DOMAIN, HEAT_SET, _LOGGER, MAX_TEMP, MIN_TEMP, STATE_AUTO
 
 AUTELIS_HEAT_TO_ACTION = collections.OrderedDict(
     [
-        (0, CURRENT_HVAC_OFF),
-        (1, CURRENT_HVAC_IDLE),
-        (2, CURRENT_HVAC_HEAT),
+        (0, None),
+        (1, HVACAction.IDLE),
+        (2, HVACAction.HEATING),
     ]
 )
 
 AUTELIS_HEAT_TO_MODE = collections.OrderedDict(
     [
-        (0, HVAC_MODE_OFF),
-        (1, HVAC_MODE_HEAT),
-        (2, HVAC_MODE_HEAT),
+        (0, HVACMode.OFF),
+        (1, HVACMode.HEAT),
+        (2, HVACMode.HEAT),
     ]
 )
 
@@ -64,7 +63,7 @@ class HeaterTemp(ClimateEntity):
         self.equip_name = equip_name
         self.target_temp = None
         self.current_temp = None
-        self._unit_of_measurement = TEMP_FAHRENHEIT
+        self._unit_of_measurement = UnitOfTemperature.FAHRENHEIT
         self._icon = icon
         self.mode = None
         self.action = None
@@ -88,7 +87,7 @@ class HeaterTemp(ClimateEntity):
     async def async_set_hvac_mode(self, hvac_mode):
         # _LOGGER.warn(f"Set Mode {hvac_mode} {self.mode}")
         self.mode = hvac_mode
-        newMode = 1 if hvac_mode == HVAC_MODE_HEAT else 0
+        newMode = 1 if hvac_mode == HVACMode.HEAT else 0
         self.data.equipment[self.equip_name] = newMode
         await self.data.api.control(self.equip_name, newMode)
 
@@ -108,11 +107,11 @@ class HeaterTemp(ClimateEntity):
 
     @property
     def supported_features(self):
-        return SUPPORT_TARGET_TEMPERATURE
+        return ClimateEntityFeature.TARGET_TEMPERATURE
 
     @property
     def hvac_modes(self):
-        return HVAC_MODE_OFF, HVAC_MODE_HEAT
+        return HVACMode.OFF, HVACMode.HEAT
 
     @property
     def hvac_mode(self):

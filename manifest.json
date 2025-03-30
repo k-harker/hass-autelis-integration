@@ -5,5 +5,5 @@
   "after_dependencies": ["discovery", "http"],
   "codeowners": ["k-harker"],
   "config_flow": true,
-  "version": "1.0.1"
+  "version": "1.0.2"
 }
