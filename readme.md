@@ -1,6 +1,6 @@
 This is the beginnings of an [Autelis Pool Controller](https://web.archive.org/web/20211218192955/http://autelis.com/) integration for [Home Assistant](https://www.home-assistant.io/).  Since the Autelis Pool Controller is no longer being sold, this is only for those with this device for their pool.  I will continue to update this until I no longer have a working Autelis.  Mine has been working fine since 2013 and I currently don't plan to replace it with anything different.
 
-If the functionality you want is not available, feel free to send me a PR or put in an issue and I'll respond as I have time.  If you 
+If the functionality you want is not available, feel free to send me a PR or put in an issue and I'll respond as I have time.  
 
 # Currently this integration supports
 
@@ -40,9 +40,14 @@ If the functionality you want is not available, feel free to send me a PR or put
 
 # Installation
 
-1. Install manually by copying all files in this folder folder into `<config_dir>/custom_components/autelis_pool`
-2. Restart Home Assistant.
-3. In the Home Assistant UI, navigate to `Configuration` then `Integrations`. Click on the add integration button at the bottom right and select `Autelis Pool Control`. Fill out the options and save.
+1. Configure your Autelis
+   1. Give names to any Aux or Macros you plan to use in Home Assistant, leave all the others as the defaults
+   2. Make sure the Autelis works when using it by using the local Autelis website.
+2. Install into Home Assistant manually by copying all files in this repo into `<config_dir>/custom_components/autelis_pool`
+   1. You can use the "File editor" plugin to do this, or follow the Home Assistant instructions for finding where this folder is.
+3. Restart Home Assistant 
+   1. You can Find the "restart" option in the menu when clicking the three dots at the top right of the Settings screen.  You want restart, not reload.
+4. In the Home Assistant UI, navigate to `Configuration` then `Integrations`. Click on the add integration button at the bottom right and select `Autelis Pool Control`. Fill out the options and save.
    - Host - Should be either the hostname or IP address of your Autelis device. 
      - If you are using a different port append `:<port>` to the hostname.  (Example `192.168.1.5:8080`)
    - Password - The Autelis controller password you use to login to the controller
