@@ -55,6 +55,8 @@ class HeaterTemp(ClimateEntity):
         equip_name,
         icon=None,
     ):
+        tempunits = UnitOfTemperature.FAHRENHEIT if data.sensors["tempunits"] == "F" else UnitOfTemperature.CELSIUS
+
         """Initialize a new Autelis sensor."""
         self.data = data
         self.friendly_name = friendly_name
@@ -63,7 +65,7 @@ class HeaterTemp(ClimateEntity):
         self.equip_name = equip_name
         self.target_temp = None
         self.current_temp = None
-        self._unit_of_measurement = UnitOfTemperature.FAHRENHEIT
+        self._unit_of_measurement = tempunits
         self._icon = icon
         self.mode = None
         self.action = None

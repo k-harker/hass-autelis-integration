@@ -32,12 +32,16 @@ class AutelisSensor(Entity):
 
     def __init__(self, data, sensor_name, friendly_name, sensor_type):
         """Initialize the sensor."""
+
+        tempunits = UnitOfTemperature.FAHRENHEIT if data.sensors["tempunits"] == "F" else UnitOfTemperature.CELSIUS
+        
+
         self.data = data
         self._name = f"{friendly_name} {sensor_type}"
         self.sensor_name = sensor_name
         self.type = sensor_type
         self._state = None
-        self._unit_of_measurement = UnitOfTemperature.FAHRENHEIT
+        self._unit_of_measurement = tempunits
 
         _LOGGER.debug(f"adding sensor {sensor_name}")
 

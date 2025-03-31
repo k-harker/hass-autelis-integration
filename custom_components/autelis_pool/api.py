@@ -4,7 +4,7 @@ import asyncio
 
 from xml.etree import ElementTree
 
-from .const import _LOGGER, DOMAIN, TEMP_SENSORS, AUTELIS_USERNAME
+from .const import _LOGGER, AUTELIS_USERNAME
 
 
 

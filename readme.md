@@ -31,23 +31,18 @@ If the functionality you want is not available, feel free to send me a PR or put
 * Battery Voltage & lowbat (Aqualink only?) 
 * Freeze Protect
 
-
-
 # Known Issues
 
 * The values for the temps don't change unless the pump is running.  For pool and spa temps, they only update when in that mode.  The air temp always updates.  This means that the spa temp will continue to report whatever temp the spa was the last time you had the spa pump running.  This is the way my Autelis works.  I could add some logic to set the temps to unknown when the pumps are not running if that is desired but I haven't had a need yet.  I'm using the Pentair Intellitouch version so if you have a different version of Autelis, maybe yours won't do this.
-
 
 # Installation
 
 1. Configure your Autelis
    1. Give names to any Aux or Macros you plan to use in Home Assistant, leave all the others as the defaults
    2. Make sure the Autelis works when using it by using the local Autelis website.
-2. Install into Home Assistant manually by copying all files in this repo into `<config_dir>/custom_components/autelis_pool`
-   1. You can use the "File editor" plugin to do this, or follow the Home Assistant instructions for finding where this folder is.
-3. Restart Home Assistant 
-   1. You can Find the "restart" option in the menu when clicking the three dots at the top right of the Settings screen.  You want restart, not reload.
-4. In the Home Assistant UI, navigate to `Configuration` then `Integrations`. Click on the add integration button at the bottom right and select `Autelis Pool Control`. Fill out the options and save.
+   3. Make sure everything looks correct also (e.g. temps are correct), since this information is pulled from your pool controller/Autelis, if it doesn't look correct there, it will be wrong in Home Assistant.
+2. Install this component using HACS.  Follow the [HACS instructions for manually adding a custom repo](https://www.hacs.xyz/docs/faq/custom_repositories/).
+3. In the Home Assistant UI, navigate to `Configuration` then `Integrations`. Click on the add integration button at the bottom right and select `Autelis Pool Control`. Fill out the options and save.
    - Host - Should be either the hostname or IP address of your Autelis device. 
      - If you are using a different port append `:<port>` to the hostname.  (Example `192.168.1.5:8080`)
    - Password - The Autelis controller password you use to login to the controller
