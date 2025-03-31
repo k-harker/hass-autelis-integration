@@ -2,8 +2,11 @@
   "domain": "autelis_pool",
   "name": "Autelis Pool Control",
   "documentation": "https://github.com/k-harker/hass-autelis-integration",
+  "issue_tracker": "https://github.com/k-harker/hass-autelis-integration/issues",
+  "iot_class": "local_polling",
+  "integration_type": "hub",
   "after_dependencies": ["discovery", "http"],
   "codeowners": ["k-harker"],
   "config_flow": true,
-  "version": "1.0.2"
+  "version": "1.0.3"
 }
