@@ -29,6 +29,7 @@ CIRCUITS = {
     "pump": "Pool",
     "spa": "Spa",
     "solarht": "Solar Heating",
+    "cleaner": "Cleaner"
 }
 
 PLATFORMS = [

@@ -10,11 +10,15 @@ If the functionality you want is not available, feel free to send me a PR or put
     * Pool
     * Spa (this is the same as putting it in Spa mode)
     * Solar Heat
-  * for the Aux (e.g. lights) 
-    * It will use the names configured in the Autelis controller.  If the name starts with "AUX" or if the name is empty, it will not be included in Home Assistant.
+    * Cleaner
+  * for the Aux (e.g. lights)
+    * It will use the names configured in the Autelis controller.
+    * If the name starts with "AUX" or if the name is empty, it will not be included in Home Assistant.
+    * If the aux name starts with "Cleaner" it will not be included so that you don't have two "Cleaner" switches
   * for the Macros
-    * It will use the names configured in the Autelis controller.  If the name starts with "MACRO" or if the name is empty, it will not be included in Home Assistant.
-* Sensors for
+    * It will use the names configured in the Autelis controller.
+    * If the name starts with "MACRO" or if the name is empty, it will not be included in Home Assistant.
+* Sensors for (support both )
     * Air Temp
     * Solar Temp
     * Spa Temp
@@ -38,11 +42,12 @@ If the functionality you want is not available, feel free to send me a PR or put
 # Installation
 
 1. Configure your Autelis
-   1. Give names to any Aux or Macros you plan to use in Home Assistant, leave all the others as the defaults
-   2. Make sure the Autelis works when using it by using the local Autelis website.
-   3. Make sure everything looks correct also (e.g. temps are correct), since this information is pulled from your pool controller/Autelis, if it doesn't look correct there, it will be wrong in Home Assistant.
-2. Install this component using HACS.  Follow the [HACS instructions for manually adding a custom repo](https://www.hacs.xyz/docs/faq/custom_repositories/).
+   1. Give names to any Aux or Macros you plan to use in Home Assistant, leave all the others as the defaults.
+   2. If you have a dedicated Cleaner aux setup in your controller, name the Aux that is taken up `Cleaner`.
+   3. Test that your Autelis works by using the local Autelis website.
+   4. Make sure everything looks correct also (e.g. temps are correct), since this information is pulled from your pool controller/Autelis, if it doesn't look correct there, it will be wrong in Home Assistant.
+2. Install this integration using HACS.  Follow the [HACS instructions for manually adding a custom repo](https://www.hacs.xyz/docs/faq/custom_repositories/).
 3. In the Home Assistant UI, navigate to `Configuration` then `Integrations`. Click on the add integration button at the bottom right and select `Autelis Pool Control`. Fill out the options and save.
-   - Host - Should be either the hostname or IP address of your Autelis device. 
+   - Host - Should be either the hostname or IP address of your Autelis device.
      - If you are using a different port append `:<port>` to the hostname.  (Example `192.168.1.5:8080`)
    - Password - The Autelis controller password you use to login to the controller

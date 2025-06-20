@@ -12,7 +12,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
         entities.append(AutelisCircuit(data, item, CIRCUITS[item]))
 
     for item in data.names.items():
-        if item[1] is None or item[1] == "" or item[1].startswith("AUX") or item[1].startswith("MACRO"):
+        if item[1] is None or item[1] == "" or item[1].startswith("AUX") or item[1].startswith("MACRO") or item[1].startswith("Cleaner"):
             continue
         entities.append(AutelisCircuit(data, item[0], item[1]))
 
