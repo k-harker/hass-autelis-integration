@@ -1,7 +1,6 @@
 # """Support for controlling Heaters through Autelis."""
 import logging
 import collections
-
 import requests
 
 from homeassistant.const import (
@@ -15,7 +14,7 @@ from homeassistant.components.climate import (
     HVACAction,
     HVACMode,
     )
-from .const import DOMAIN, HEAT_SET, _LOGGER, MAX_TEMP, MIN_TEMP, STATE_AUTO
+from .const import AUTELIS_JANDY, DOMAIN, HEAT_SET, _LOGGER, MAX_TEMP, MIN_TEMP, STATE_AUTO
 
 AUTELIS_HEAT_TO_ACTION = collections.OrderedDict(
     [
@@ -161,7 +160,11 @@ class HeaterTemp(ClimateEntity):
 
         self.current_temp = int(self.data.sensors[self.sensor_name])
         self.target_temp = int(self.data.sensors[self.target_name])
-        heatMode = int(self.data.equipment[self.equip_name])
+        
+        if self.data.autelis_type == AUTELIS_JANDY:
+            heatMode = int(self.data.equipment[self.equip_name])
+        else:
+            heatMode = int(self.data.sensors[self.equip_name])
 
         self.mode = AUTELIS_HEAT_TO_MODE[heatMode]
         self.action = AUTELIS_HEAT_TO_ACTION[heatMode]

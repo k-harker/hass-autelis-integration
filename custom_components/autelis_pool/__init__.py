@@ -15,9 +15,10 @@ from homeassistant.const import (
 from homeassistant.util import Throttle
 
 from .const import (
+    AUTELIS_PENTAIR,
+    AUTELIS_JANDY,
     DOMAIN, 
     AUTELIS_PLATFORMS, 
-    TEMP_SENSORS,
     STATE_AUTO,
     STATE_SERVICE,
     PLATFORMS
@@ -88,6 +89,7 @@ class AutelisData:
         self.equipment = { }
         self.mode = ""
         self.names = { }
+        self.autelis_type = AUTELIS_JANDY
 
     @Throttle(MIN_TIME_BETWEEN_UPDATES)
     async def update(self):
@@ -116,6 +118,11 @@ class AutelisData:
                 self.equipment[child.tag] = value
         else:
             _LOGGER.error("equip is None")
+        
+        found_circuit = equip.find("circuit1")
+
+        if found_circuit is not None:
+            self.autelis_type = AUTELIS_PENTAIR
         
         #vbat = status.find(".//vbat")
         

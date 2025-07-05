@@ -17,7 +17,7 @@ TEMP_SENSORS = {
     "pooltemp": ["Temperature", "Pool"],
     "spatemp": ["Temperature", "Spa"],
     "airtemp": ["Temperature", "Air"],
-    "solartemp": ["Temperature", "Solar"],
+    "soltemp": ["Temperature", "Solar"],
 }
 
 HEAT_SET = {
@@ -26,10 +26,10 @@ HEAT_SET = {
 }
 
 CIRCUITS = {
-    "pump": "Pool",
-    "spa": "Spa",
-    "solarht": "Solar Heating",
-    "cleaner": "Cleaner"
+    # "pump": "Pool",
+    # "spa": "Spa",
+    # "solarht": "Solar Heating",
+    # "cleaner": "Cleaner",
 }
 
 PLATFORMS = [
@@ -43,3 +43,8 @@ STATE_AUTO = "auto"
 
 MAX_TEMP = 104
 MIN_TEMP = 34
+
+# these constants represent which type of autelis device
+# we are talking to
+AUTELIS_JANDY = 0    #jandy aqualink version
+AUTELIS_PENTAIR = 1  #pentair intellitouch version
